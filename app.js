@@ -4,7 +4,7 @@ import express from "express";
 import cors from "cors";
 
 import connectDB from "./config/database.js";
-import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
 
@@ -19,7 +19,7 @@ app.use(
 
 app.use(express.json());
 
-app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
 
 app.use((err, req, res, next) => {
   console.error("An error occurred:", err);
@@ -35,7 +35,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
   console.log(`

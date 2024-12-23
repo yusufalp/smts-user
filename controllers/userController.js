@@ -4,7 +4,32 @@ import User from "../models/userModel.js";
 import CustomError from "../utils/CustomError.js";
 import { decodeJwtToken, generateJwtToken } from "../utils/token.js";
 
-export const login = async (req, res, next) => {
+export const deleteUser = async (req, res, next) => {};
+
+export const getUserById = async (req, res, next) => {
+  const { _id } = req.params;
+
+  try {
+    if (!_id) {
+      throw new CustomError("User id is required ", 400);
+    }
+
+    const user = await User.findById(_id);
+
+    if (!user) {
+      throw new CustomError("User not found", 404);
+    }
+
+    return res.status(200).json({
+      success: { message: "User found successfully" },
+      data: { user },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const loginUser = async (req, res, next) => {
   const { username, password } = req.body;
 
   try {
@@ -23,6 +48,9 @@ export const login = async (req, res, next) => {
     if (!isMatch) {
       throw new CustomError("Invalid credentials", 400);
     }
+
+    user.lastLogin = new Date();
+    await user.save();
 
     const accessToken = generateJwtToken(user);
     const refreshToken = generateJwtToken(user, "refresh");
@@ -45,7 +73,7 @@ export const login = async (req, res, next) => {
   }
 };
 
-export const logout = (req, res, next) => {
+export const logoutUser = (req, res, next) => {
   try {
     res.clearCookie("refreshToken");
 
@@ -85,7 +113,7 @@ export const refreshAccessToken = (req, res, next) => {
   }
 };
 
-export const signup = async (req, res, next) => {
+export const signupUser = async (req, res, next) => {
   const { username, password } = req.body;
 
   try {
@@ -121,3 +149,5 @@ export const signup = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updateUser = async (req, res, next) => {};
