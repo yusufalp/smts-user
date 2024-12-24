@@ -1,15 +1,20 @@
 import "dotenv/config";
 
 import express from "express";
+import helmet from "helmet";
+import morgan from "morgan";
 import cors from "cors";
 
 import connectDB from "./config/database.js";
+
 import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
 
 connectDB();
 
+app.use(helmet());
+app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 app.use(
   cors({
     origin: [process.env.FRONTEND_URL, "http://localhost:5173"],
@@ -38,8 +43,5 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
-  console.log(`
-    Server is listening on port ${PORT}. 
-    http://localhost:${PORT}
-    `);
+  console.log(`Server is listening on port ${PORT}. `);
 });
