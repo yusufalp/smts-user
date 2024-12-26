@@ -1,8 +1,6 @@
 import express from "express";
 
 import {
-  deleteUser,
-  getUserById,
   loginUser,
   logoutUser,
   refreshAccessToken,
@@ -11,14 +9,6 @@ import {
 } from "../controllers/userController.js";
 
 const router = express.Router();
-
-// DELETE /users/:id
-// Deactivate or delete a user account.
-router.delete("/:_id", deleteUser);
-
-// GET /users/:id
-// Retrieve user account details.
-router.get("/:_id", getUserById);
 
 // POST /users/login
 // Authenticate a user and return a token.
@@ -38,6 +28,6 @@ router.post("/signup", signupUser);
 
 // PATCH /users/:id
 // Update user account details (e.g., username, password).
-router.patch("/:_id", updateUser);
+router.patch("/", updateUser);
 
 export default router;
