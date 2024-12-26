@@ -7,6 +7,7 @@ import cors from "cors";
 
 import connectDB from "./config/database.js";
 
+import adminRoutes from "./routes/adminRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
@@ -24,6 +25,7 @@ app.use(
 
 app.use(express.json());
 
+app.use("/api/admin", adminRoutes);
 app.use("/users", userRoutes);
 
 app.use((err, req, res, next) => {
