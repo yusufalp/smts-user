@@ -100,7 +100,13 @@ export const signupUser = async (req, res, next) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = new User({ username, password: hashedPassword });
+    const lastLogin = new Date();
+
+    const user = new User({
+      username,
+      password: hashedPassword,
+      lastLogin,
+    });
 
     await user.save();
 
